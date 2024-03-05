@@ -68,13 +68,13 @@ public class Controller {
         if (fromCombo.getValue() == null || toCombo.getValue() == null) {
             converted.setText("Select currency");
             convertButton.setDisable(true);
-            throw new NullPointerException("Select currency");
+            throw new IllegalArgumentException("Select currency");
         }
         currencyFrom = (String) fromCombo.getValue();
         currencyTo = (String) toCombo.getValue();
         double parsAmount = dao.getAmount(amountDouble, currencyFrom, currencyTo);
         BigDecimal amountBigDecimal = new BigDecimal(parsAmount);
-        converted.setText(String.valueOf(amountBigDecimal.setScale(2, RoundingMode.HALF_DOWN)));
+        converted.setText(String.valueOf(amountBigDecimal.setScale(3, RoundingMode.HALF_DOWN)));
     }
 
     public static void main(String[] args) {
