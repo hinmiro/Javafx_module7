@@ -8,6 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+
 public class Controller {
     @FXML
     private Button clearButton;
@@ -53,7 +57,9 @@ public class Controller {
 
     public void convert() {
         try {
-            amountDouble = Double.parseDouble(amount.getText());
+            amountDouble = Double.parseDouble(amount.getText().replace(",", "."));
+
+
         } catch (NumberFormatException e) {
             converted.setText("Cannot convert");
             e.printStackTrace();
@@ -67,7 +73,8 @@ public class Controller {
         currencyFrom = (String) fromCombo.getValue();
         currencyTo = (String) toCombo.getValue();
         double parsAmount = dao.getAmount(amountDouble, currencyFrom, currencyTo);
-        converted.setText(String.valueOf(Math.round(parsAmount * 100.00) / 100.00));
+        BigDecimal amountBigDecimal = new BigDecimal(parsAmount);
+        converted.setText(String.valueOf(amountBigDecimal.setScale(2, RoundingMode.HALF_DOWN)));
     }
 
     public static void main(String[] args) {
