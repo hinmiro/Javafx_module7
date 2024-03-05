@@ -1,6 +1,6 @@
 -- Dumping database structure for currencyconverter
-DROP DATABASE `currencyconverter`
-CREATE DATABASE IF NOT EXISTS `currencyconverter` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+DROP DATABASE IF EXISTS `currencyconverter`;
+CREATE DATABASE `currencyconverter` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `currencyconverter`;
 
 -- Dumping structure for taulu currencyconverter.currency
