@@ -14,8 +14,17 @@ public class ControllerForAdd {
     private TextField newCurrencyRate;
     private CurrencyConverter gui;
     private Controller cont;
+    private double rate;
 
     public void addNewRate() {
+        try {
+            rate = Double.parseDouble(newCurrencyRate.getText().replace(",", "."));
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid currency rate");
+            newCurrencyRate.clear();
+            e.printStackTrace();
+            return;
+        }
         CurrencyDao dao = new CurrencyDao();
         dao.persist(new Currency(Double.parseDouble(newCurrencyRate.getText()), newCurrency.getText()));
         System.out.println("New currency Added");
