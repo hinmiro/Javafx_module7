@@ -8,9 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public class Controller {
     @FXML
@@ -26,27 +27,25 @@ public class Controller {
     @FXML
     private TextField converted;
     private double amountDouble;
-    private String currencyFrom;
-    private String currencyTo;
-    private CurrencyDao dao;
+    private double currencyFrom;
+    private double currencyTo;
+    private CurrencyDao currencyDao;
+    private long count;
+    private ArrayList<String> names;
+    private CurrencyConverter gui;
+    private ControllerForAdd adder;
 
     public void initialize() {
-        ObservableList<String> options = FXCollections.observableArrayList(
-                "EUR",
-                "USD",
-                "JPY",
-                "BGN",
-                "CZK",
-                "DKK",
-                "GBP",
-                "PLN",
-                "SEK"
-        );
-        fromCombo.setItems(options);
-        toCombo.setItems(options);
-        dao = new CurrencyDao();
+        adder = new ControllerForAdd();
+        names = new ArrayList<>();
+        currencyDao = new CurrencyDao();
+        updateComboBox();
     }
 
+
+    public void setGui(CurrencyConverter gui) {
+        this.gui = gui;
+    }
 
     public void clear() {
         amount.clear();
@@ -70,14 +69,44 @@ public class Controller {
             convertButton.setDisable(true);
             throw new IllegalArgumentException("Select currency");
         }
-        currencyFrom = (String) fromCombo.getValue();
-        currencyTo = (String) toCombo.getValue();
-        double parsAmount = dao.getAmount(amountDouble, currencyFrom, currencyTo);
+        currencyFrom = currencyDao.findWithName(fromCombo.getValue().toString());
+        currencyTo = currencyDao.findWithName(toCombo.getValue().toString());
+        double parsAmount = getAmount(amountDouble, currencyFrom, currencyTo);
         BigDecimal amountBigDecimal = new BigDecimal(parsAmount);
         converted.setText(String.valueOf(amountBigDecimal.setScale(3, RoundingMode.HALF_DOWN)));
+    }
+
+    public double getAmount(double amount, double from, double to) {
+        double baseamount = amount / currencyFrom;
+        return baseamount * currencyTo;
+    }
+
+    public void addCurrency() {
+        try {
+            adder.setCont(this);
+            gui.showNewStage(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateComboBox() {
+        fromCombo.getItems().clear();
+        toCombo.getItems().clear();
+        names.clear();
+        count = currencyDao.howMany();
+        for (int i = 0; i < count; i++) {
+            names.add(currencyDao.findName(i + 1));
+        }
+        ObservableList<String> options = FXCollections.observableArrayList();
+        options.addAll(names);
+
+        fromCombo.setItems(options);
+        toCombo.setItems(options);
     }
 
     public static void main(String[] args) {
         CurrencyConverter.launch(CurrencyConverter.class);
     }
+
 }

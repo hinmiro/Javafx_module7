@@ -5,6 +5,7 @@ USE `currencyconverter`;
 
 -- Dumping structure for taulu currencyconverter.currency
 CREATE TABLE IF NOT EXISTS `currency` (
+    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `rate` float NOT NULL,
   `name` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -23,4 +24,4 @@ INSERT INTO `currency` (`rate`, `name`) VALUES
 
 DROP USER IF EXISTS 'appuser'@'localhost';
 CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'appuser';
-GRANT SELECT ON currencyconverter.* TO 'appuser'@'localhost';
+GRANT SELECT, INSERT ON currencyconverter.* TO 'appuser'@'localhost';
