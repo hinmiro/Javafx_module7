@@ -10,7 +10,6 @@ public class MariadbConnection {
     private static EntityManager em = null;
 
     public static EntityManager getInstance() {
-        // you need to add synchronization if you run in a multi-threaded environment
 
         if (em == null) {
             if (emf == null) {

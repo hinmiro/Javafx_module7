@@ -3,9 +3,10 @@ package CurrencyConverter.Dao;
 import CurrencyConverter.Entity.Currency;
 import jakarta.persistence.EntityManager;
 import CurrencyConverter.datasource.*;
+import jakarta.persistence.NoResultException;
 
 public class CurrencyDao {
-    private static EntityManager em = MariadbConnection.getInstance();
+    EntityManager em = MariadbConnection.getInstance();
 
 
     public void persist(Currency c) {
@@ -36,11 +37,17 @@ public class CurrencyDao {
     }
 
     public String findName(int i) {
-        return (String) em.createQuery("SELECT name FROM Currency WHERE id= :id").setParameter("id", i).getSingleResult();
+        return (String) em.createQuery("SELECT abbreviation FROM Currency WHERE id= :id").setParameter("id", i).getSingleResult();
     }
 
-    public double findWithName(String n) {
-        return (double) em.createQuery("SELECT rate FROM Currency WHERE name= :name").setParameter("name", n).getSingleResult();
+    public Currency findWithName(String abbreviation) {
+        try {
+            Currency c = em.createQuery("SELECT c FROM Currency c WHERE c.abbreviation = :abbreviation", Currency.class)
+                    .setParameter("abbreviation", abbreviation).getSingleResult();
+            return c;
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-
 }

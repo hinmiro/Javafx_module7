@@ -6,13 +6,17 @@ import jakarta.persistence.*;
 @Table(name = "currency")
 public class Currency {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private double rate;
+    private String abbreviation;
     private String name;
 
-    public Currency(double rate, String name) {
+    public Currency(double rate, String abbreviation, String name) {
         this.name = name;
         this.rate = rate;
+        this.abbreviation = abbreviation;
     }
 
     public Currency() {
@@ -27,7 +31,9 @@ public class Currency {
         return this.name;
     }
 
-    public int getId() {
+    public String getAbbreviation() {return this.abbreviation;};
+
+    public long getId() {
         return this.id;
     }
 }

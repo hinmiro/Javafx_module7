@@ -10,6 +10,8 @@ public class ControllerForAdd {
     private TextField newCurrency;
     @FXML
     private TextField newCurrencyRate;
+    @FXML
+    private TextField abbre;
     private CurrencyConverter gui;
     private Controller cont;
 
@@ -18,7 +20,7 @@ public class ControllerForAdd {
 
         try {
             double rate = Double.parseDouble(newCurrencyRate.getText().replace(",", "."));
-            dao.persist(new Currency(rate, newCurrency.getText()));
+            dao.persist(new Currency(rate, abbre.getText(), newCurrency.getText()));
         } catch (NumberFormatException e) {
             System.out.println("Invalid currency rate");
             newCurrencyRate.clear();

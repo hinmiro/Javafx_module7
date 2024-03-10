@@ -1,6 +1,9 @@
 package CurrencyConverter.Application;
 
 import CurrencyConverter.Dao.CurrencyDao;
+import CurrencyConverter.Dao.TransactionDao;
+import CurrencyConverter.Entity.Currency;
+import CurrencyConverter.Entity.Transaction;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -34,12 +37,18 @@ public class Controller {
     private ArrayList<String> names;
     private CurrencyConverter gui;
     private ControllerForAdd adder;
+    private TransactionDao transDao;
+    private Currency source, destination;
+    private Transaction trans;
 
     public void initialize() {
+
         adder = new ControllerForAdd();
         names = new ArrayList<>();
         currencyDao = new CurrencyDao();
-        updateComboBox();
+        transDao = new TransactionDao();
+        populateDatabase();
+
     }
 
 
@@ -69,16 +78,18 @@ public class Controller {
             convertButton.setDisable(true);
             throw new IllegalArgumentException("Select currency");
         }
-        currencyFrom = currencyDao.findWithName(fromCombo.getValue().toString());
-        currencyTo = currencyDao.findWithName(toCombo.getValue().toString());
-        double parsAmount = getAmount(amountDouble, currencyFrom, currencyTo);
+        source = currencyDao.findWithName(fromCombo.getValue().toString());
+        destination = currencyDao.findWithName(toCombo.getValue().toString());
+        trans = new Transaction(amountDouble, source, destination);
+        transDao.persist(trans);
+        double parsAmount = getAmount(amountDouble, source.getRate(), destination.getRate());
         BigDecimal amountBigDecimal = new BigDecimal(parsAmount);
         converted.setText(String.valueOf(amountBigDecimal.setScale(3, RoundingMode.HALF_DOWN)));
     }
 
     public double getAmount(double amount, double from, double to) {
-        double baseamount = amount / currencyFrom;
-        return baseamount * currencyTo;
+        double baseamount = amount / from;
+        return baseamount * to;
     }
 
     public void addCurrency() {
@@ -103,6 +114,16 @@ public class Controller {
 
         fromCombo.setItems(options);
         toCombo.setItems(options);
+    }
+
+    public void populateDatabase() {
+
+        currencyDao.persist(new Currency(1.093, "USD", "US dollar"));
+        currencyDao.persist(new Currency(160.99, "JPY", "Japanese yen"));
+        currencyDao.persist(new Currency(1, "EUR", "European euro"));
+        currencyDao.persist(new Currency(1.6569, "AUD", "Australian dollar"));
+        updateComboBox();
+
     }
 
     public static void main(String[] args) {

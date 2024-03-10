@@ -8,18 +8,24 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CurrencyConverter.Application.ControllerForAdd">
    <children>
+      <Label layoutX="14.0" layoutY="39.0" text="New currency name:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="78.0" text="New currency abbreviation:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="116.0" text="New currency rate:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="newCurrency" layoutX="208.0" layoutY="38.0" promptText="Type name" />
+      <TextField fx:id="abbre" layoutX="208.0" layoutY="75.0" promptText="Type abbreviation" />
+      <TextField fx:id="newCurrencyRate" layoutX="208.0" layoutY="114.0" promptText="Rate comparing EUR" />
       <Button fx:id="addRate" layoutX="324.0" layoutY="175.0" mnemonicParsing="false" onAction="#addNewRate" prefHeight="25.0" prefWidth="64.0" text="Add" />
-      <Label layoutX="64.0" layoutY="40.0" text="New currency name:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="64.0" layoutY="70.0" text="New currency rate:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <TextField fx:id="newCurrency" layoutX="208.0" layoutY="38.0" promptText="Type abbreviation" />
-      <TextField fx:id="newCurrencyRate" layoutX="208.0" layoutY="68.0" promptText="Rate comparing EUR" />
    </children>
 </Pane>
