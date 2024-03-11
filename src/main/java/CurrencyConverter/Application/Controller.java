@@ -47,7 +47,9 @@ public class Controller {
         names = new ArrayList<>();
         currencyDao = new CurrencyDao();
         transDao = new TransactionDao();
-        populateDatabase();
+        if (currencyDao.howMany() == 0)
+            populateDatabase();
+        updateComboBox();
 
     }
 
@@ -122,8 +124,7 @@ public class Controller {
         currencyDao.persist(new Currency(160.99, "JPY", "Japanese yen"));
         currencyDao.persist(new Currency(1, "EUR", "European euro"));
         currencyDao.persist(new Currency(1.6569, "AUD", "Australian dollar"));
-        updateComboBox();
-
+        currencyDao.commit();
     }
 
     public static void main(String[] args) {

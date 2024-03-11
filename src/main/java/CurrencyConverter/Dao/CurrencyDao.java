@@ -50,4 +50,9 @@ public class CurrencyDao {
             return null;
         }
     }
+
+    public void commit() {
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
 }
